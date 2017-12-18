@@ -1,9 +1,9 @@
 {
     "id" : "DeadIslands",
     "version" : "0.1.0-SNAPSHOT",
-    "author" : "",
+    "author" : "Adrijaned",
     "displayName" : "DeadIslands",
-    "description" : "",
-    "dependencies" : [],
+    "description" : "Terasology world generator of dead islands - GCI2017",
+    "dependencies" : [{"id": "Core", "minVersion": "1.0.0"}],
     "serverSideOnly" : false
 }
