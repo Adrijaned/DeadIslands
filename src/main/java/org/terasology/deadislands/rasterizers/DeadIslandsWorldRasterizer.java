@@ -15,7 +15,7 @@
  */
 package org.terasology.deadislands.rasterizers;
 
-import org.terasology.deadislands.DeadIslandsSurfaceProvider;
+import org.terasology.deadislands.DeadIslandsWorldGenerator;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -23,23 +23,26 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-public class DeadIslandsWorldRasterizer implements WorldRasterizer {
-    private Block dirtBlock;
+public class DeadIslandsWorldRasterizer implements org.terasology.world.generation.WorldRasterizer {
+    private Block dirtBlock, waterBlock;
+
     @Override
     public void initialize() {
         dirtBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
+        waterBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
-        for (Vector3i coordinates : chunkRegion.getRegion()){
+        for (Vector3i coordinates : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            if (coordinates.y < surfaceHeight){
+            if (coordinates.y < surfaceHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
+            } else if (coordinates.y < DeadIslandsWorldGenerator.seaLevel) {
+                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), waterBlock);
             }
         }
     }

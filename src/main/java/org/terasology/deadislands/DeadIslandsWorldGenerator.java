@@ -29,6 +29,8 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
+    public static final int seaLevel = 3;
+
     public DeadIslandsWorldGenerator(SimpleUri uri) {
         super(uri);
     }
@@ -38,6 +40,6 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .addRasterizer(new DeadIslandsWorldRasterizer())
                 .addProvider(new DeadIslandsSurfaceProvider())
-                .addProvider(new SeaLevelProvider(0));
+                .addProvider(new SeaLevelProvider(seaLevel));
     }
 }
