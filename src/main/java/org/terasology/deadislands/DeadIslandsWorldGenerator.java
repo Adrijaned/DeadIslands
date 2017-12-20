@@ -16,6 +16,7 @@
 package org.terasology.deadislands;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsSurfaceProvider;
 import org.terasology.deadislands.rasterizers.DeadIslandsWorldRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
@@ -29,7 +30,7 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
-    public static final int seaLevel = 3;
+    public static final int seaLevel = 4;
 
     public DeadIslandsWorldGenerator(SimpleUri uri) {
         super(uri);

@@ -39,9 +39,12 @@ public class DeadIslandsWorldRasterizer implements org.terasology.world.generati
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            if (coordinates.y < surfaceHeight) {
+            int seaLevel = DeadIslandsWorldGenerator.seaLevel;
+            if (coordinates.y > seaLevel && coordinates.y < (surfaceHeight - seaLevel) * 2 + seaLevel) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
-            } else if (coordinates.y < DeadIslandsWorldGenerator.seaLevel) {
+            } else if (coordinates.y < surfaceHeight) {
+                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
+            } else if (coordinates.y <= seaLevel) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), waterBlock);
             }
         }
