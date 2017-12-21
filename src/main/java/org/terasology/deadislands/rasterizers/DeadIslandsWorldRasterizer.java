@@ -22,9 +22,16 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
+import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.Region;
+import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
+@Requires({
+        @Facet(SeaLevelFacet.class),
+        @Facet(SurfaceHeightFacet.class)
+})
 public class DeadIslandsWorldRasterizer implements org.terasology.world.generation.WorldRasterizer {
     private Block dirtBlock, waterBlock;
 
@@ -36,10 +43,10 @@ public class DeadIslandsWorldRasterizer implements org.terasology.world.generati
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+        int seaLevel = chunkRegion.getFacet(SeaLevelFacet.class).getSeaLevel();
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            int seaLevel = DeadIslandsWorldGenerator.seaLevel;
             if (coordinates.y > seaLevel && coordinates.y < (surfaceHeight - seaLevel) * 2 + seaLevel) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
             } else if (coordinates.y < surfaceHeight) {

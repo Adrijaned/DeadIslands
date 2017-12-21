@@ -15,46 +15,14 @@
  */
 package org.terasology.deadislands;
 
-import org.terasology.world.biomes.Biome;
+import org.terasology.world.biomes.BiomeRegistrator;
+import org.terasology.world.biomes.BiomeRegistry;
 
-public enum DeadIslandsBiomes implements Biome {
-    OCEAN("Ocean", .3f, 1f, .3f),
-    BEACH("Beach", .3f, .99f, .4f),
-    ISLAND("Island", .25f, .95f, .6f);
-
-    private final String id, name;
-    private final float fog, humidity, temperature;
-
-    DeadIslandsBiomes(String name, float fog, float humidity, float temperature) {
-        this.name = name;
-        this.id = "DeadIslands:" + name().toLowerCase();
-        this.fog = fog;
-        this.humidity = humidity;
-        this.temperature = temperature;
-    }
-
+public class DeadIslandsBiomes implements BiomeRegistrator {
     @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public float getFog() {
-        return fog;
-    }
-
-    @Override
-    public float getHumidity() {
-        return humidity;
-    }
-
-    @Override
-    public float getTemperature() {
-        return temperature;
+    public void registerBiomes(BiomeRegistry registry) {
+        for (DeadIslandsBiome biome : DeadIslandsBiome.values()){
+            registry.registerBiome(biome);
+        }
     }
 }

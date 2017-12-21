@@ -16,17 +16,38 @@
 package org.terasology.deadislands.facetProviders;
 
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
+import org.terasology.deadislands.DeadIslandsBiome;
+import org.terasology.math.geom.BaseVector2i;
+import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Produces(BiomeFacet.class)
 @Requires({
-        @Facet(SeaLevelFacet.class),
-        @Facet(SurfaceHeightFacet.class)
+        @Facet(SurfaceHeightFacet.class),
+        @Facet(SeaLevelFacet.class)
 })
-public class DeadIslandsBiomeProvider {
+public class DeadIslandsBiomeProvider implements FacetProvider {
 
+    @Override
+    public void setSeed(long seed) {
+    }
+
+    @Override
+    public void process(GeneratingRegion region) {
+        int seaLevel = region.getRegionFacet(SeaLevelFacet.class).getSeaLevel();
+        SurfaceHeightFacet heightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
+        Border3D border = region.getBorderForFacet(BiomeFacet.class);
+        BiomeFacet biomeFacet = new BiomeFacet(region.getRegion(), border);
+        for (BaseVector2i coordinates : biomeFacet.getRelativeRegion().contents()) {
+            if (heightFacet.get(coordinates) <= seaLevel){
+                biomeFacet.set(coordinates, DeadIslandsBiome.OCEAN);
+            } else if (heightFacet.get(coordinates) <= seaLevel + 1) {
+                biomeFacet.set(coordinates, DeadIslandsBiome.BEACH);
+            } else {
+                biomeFacet.set(coordinates, DeadIslandsBiome.ISLAND);
+            }
+        }
+        region.setRegionFacet(BiomeFacet.class, biomeFacet);
+    }
 }

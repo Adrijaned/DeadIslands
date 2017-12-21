@@ -16,7 +16,10 @@
 package org.terasology.deadislands;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsBiomeProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsHumidityProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsSurfaceProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsTemperatureProvider;
 import org.terasology.deadislands.rasterizers.DeadIslandsWorldRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
@@ -30,8 +33,6 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
-    public static final int seaLevel = 4;
-
     public DeadIslandsWorldGenerator(SimpleUri uri) {
         super(uri);
     }
@@ -39,8 +40,13 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
     @Override
     protected WorldBuilder createWorld() {
         return new WorldBuilder(worldGeneratorPluginLibrary)
-                .addRasterizer(new DeadIslandsWorldRasterizer())
+                .setSeaLevel(4)
+                .addProvider(new SeaLevelProvider(4))
                 .addProvider(new DeadIslandsSurfaceProvider())
-                .addProvider(new SeaLevelProvider(seaLevel));
+                .addProvider(new DeadIslandsHumidityProvider())
+                .addProvider(new DeadIslandsTemperatureProvider())
+                .addProvider(new DeadIslandsBiomeProvider())
+                .addRasterizer(new DeadIslandsWorldRasterizer())
+                .addPlugins();
     }
 }

@@ -44,8 +44,7 @@ public class DeadIslandsSurfaceProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         Border3D border = region.getBorderForFacet(SurfaceHeightFacet.class);
         SurfaceHeightFacet facet = new SurfaceHeightFacet(region.getRegion(), border);
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i coordinates : processRegion.contents()) {
+        for (BaseVector2i coordinates : facet.getWorldRegion().contents()) {
             facet.setWorld(coordinates, surfaceNoise.noise(coordinates.getX(), coordinates.getY()) * 20);
         }
         region.setRegionFacet(SurfaceHeightFacet.class, facet);
