@@ -15,7 +15,7 @@
  */
 package org.terasology.deadislands.rasterizers;
 
-import org.terasology.core.world.generator.facets.BiomeFacet;
+import org.terasology.deadislands.facets.DeadIslandsTreeFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -25,36 +25,33 @@ import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Requires({
         @Facet(SeaLevelFacet.class),
         @Facet(SurfaceHeightFacet.class),
-        @Facet(BiomeFacet.class)
+        @Facet(DeadIslandsTreeFacet.class)
 })
-public class DeadIslandsWorldRasterizer implements org.terasology.world.generation.WorldRasterizer {
-    private Block dirtBlock, waterBlock;
+public class DeadIslandsTreeRasterizer implements WorldRasterizer {
+    private Block trunk;
+    private static final float rarity = 0.9f;
 
     @Override
     public void initialize() {
-        dirtBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
-        waterBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
+        trunk = CoreRegistry.get(BlockManager.class).getBlock("Core:OakTrunk");
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         int seaLevel = chunkRegion.getFacet(SeaLevelFacet.class).getSeaLevel();
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        DeadIslandsTreeFacet treeFacet = chunkRegion.getFacet(DeadIslandsTreeFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
-            Vector3i reCalceedCoordinates = ChunkMath.calcBlockPos(coordinates);
-            float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            chunk.setBiome(reCalceedCoordinates.x, reCalceedCoordinates.y, reCalceedCoordinates.z, chunkRegion.getFacet(BiomeFacet.class).get(reCalceedCoordinates.x, reCalceedCoordinates.z));
-            if (coordinates.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
-            } else if (coordinates.y <= seaLevel) {
-                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), waterBlock);
-            }
+//            if (chunk.getBiome() && coordinates.y >= surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) && treeFacet.getWorld(coordinates.x, coordinates.z) >= rarity && coordinates.y < surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) + 5){
+//                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), trunk);
+//            }
         }
     }
 }

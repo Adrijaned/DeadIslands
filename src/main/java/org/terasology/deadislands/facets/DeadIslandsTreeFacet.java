@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.deadislands;
+package org.terasology.deadislands.facets;
 
-import org.terasology.world.biomes.BiomeRegistrator;
-import org.terasology.world.biomes.BiomeRegistry;
+import org.terasology.math.Region3i;
+import org.terasology.world.generation.Border3D;
+import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
 
-public class DeadIslandsBiomes implements BiomeRegistrator {
-    @Override
-    public void registerBiomes(BiomeRegistry registry) {
-        registry.registerBiome(DeadIslandsBiome.BEACH);
-        registry.registerBiome(DeadIslandsBiome.ISLAND);
-        registry.registerBiome(DeadIslandsBiome.OCEAN);
+public class DeadIslandsTreeFacet extends BaseFieldFacet2D {
+    public DeadIslandsTreeFacet(Region3i targetRegion, Border3D border) {
+        super(targetRegion, border);
     }
 }

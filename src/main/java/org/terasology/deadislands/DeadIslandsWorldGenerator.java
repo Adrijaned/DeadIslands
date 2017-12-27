@@ -20,6 +20,8 @@ import org.terasology.deadislands.facetProviders.DeadIslandsBiomeProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsHumidityProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsSurfaceProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsTemperatureProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsTreeProvider;
+import org.terasology.deadislands.rasterizers.DeadIslandsTreeRasterizer;
 import org.terasology.deadislands.rasterizers.DeadIslandsWorldRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
@@ -46,7 +48,9 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new DeadIslandsHumidityProvider())
                 .addProvider(new DeadIslandsTemperatureProvider())
                 .addProvider(new DeadIslandsBiomeProvider())
+                .addProvider(new DeadIslandsTreeProvider())
                 .addRasterizer(new DeadIslandsWorldRasterizer())
+                .addRasterizer(new DeadIslandsTreeRasterizer())
                 .addPlugins();
     }
 }
