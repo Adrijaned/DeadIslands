@@ -62,5 +62,6 @@ public class DeadIslandsBiomeProvider implements FacetProvider {
             }
             biomeFacet.setWorld(coordinates, DeadIslandsBiome.BEACH);
         }
+        region.setRegionFacet(DeadIslandsBiomeFacet.class, biomeFacet);
     }
 }
