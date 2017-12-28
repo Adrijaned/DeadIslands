@@ -29,7 +29,7 @@ public class DeadIslandsTreeProvider implements FacetProvider {
     private Noise noise;
     @Override
     public void setSeed(long seed) {
-        noise = new SimplexNoise(seed + 565457);
+        noise = new SimplexNoise(seed + 5457);
     }
 
     @Override

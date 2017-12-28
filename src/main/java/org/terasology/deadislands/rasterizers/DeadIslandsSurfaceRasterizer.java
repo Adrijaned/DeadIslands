@@ -15,11 +15,15 @@
  */
 package org.terasology.deadislands.rasterizers;
 
-import org.terasology.core.world.generator.facets.BiomeFacet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.deadislands.DeadIslandsBiome;
+import org.terasology.deadislands.facets.DeadIslandsBiomeFacet;
 import org.terasology.deadislands.facets.DeadIslandsSoilThicknessFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.world.biomes.Biome;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
@@ -29,19 +33,24 @@ import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
+import java.util.Objects;
+
 @Requires({
         @Facet(SeaLevelFacet.class),
         @Facet(SurfaceHeightFacet.class),
-        @Facet(DeadIslandsSoilThicknessFacet.class)
+        @Facet(DeadIslandsSoilThicknessFacet.class),
+        @Facet(DeadIslandsBiomeFacet.class)
 })
-public class DeadIslandsWorldRasterizer implements org.terasology.world.generation.WorldRasterizer {
-    private Block dirtBlock, waterBlock, stoneBlock;
+public class DeadIslandsSurfaceRasterizer implements org.terasology.world.generation.WorldRasterizer {
+    private Block dirtBlock, waterBlock, stoneBlock, sandBlock, gravelBlock;
 
     @Override
     public void initialize() {
         dirtBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         waterBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
         stoneBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
+        sandBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Sand");
+        gravelBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Gravel");
     }
 
     @Override
@@ -49,13 +58,23 @@ public class DeadIslandsWorldRasterizer implements org.terasology.world.generati
         int seaLevel = chunkRegion.getFacet(SeaLevelFacet.class).getSeaLevel();
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         DeadIslandsSoilThicknessFacet soilThicknessFacet = chunkRegion.getFacet(DeadIslandsSoilThicknessFacet.class);
+        DeadIslandsBiomeFacet biomeFacet = chunkRegion.getFacet(DeadIslandsBiomeFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            if (coordinates.y < surfaceHeight - soilThicknessFacet.getWorld(coordinates.x, coordinates.z)) {
+            float soilThickness = soilThicknessFacet.getWorld(coordinates.x, coordinates.z);
+            DeadIslandsBiome biome = biomeFacet.getWorld(coordinates);
+            if (coordinates.y < surfaceHeight - soilThickness) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), stoneBlock);
-            }
-            else if (coordinates.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
+            } else if (coordinates.y < surfaceHeight) {
+                if (coordinates.y < surfaceHeight - (soilThickness / 2)){
+                    chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
+                } else if (biome == DeadIslandsBiome.BEACH){
+                    chunk.setBlock(ChunkMath.calcBlockPos(coordinates), sandBlock);
+                } else if (biome == DeadIslandsBiome.OCEAN && soilThickness > 6.5) {
+                    chunk.setBlock(ChunkMath.calcBlockPos(coordinates), gravelBlock);
+                } else {
+                    chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
+                }
             } else if (coordinates.y <= seaLevel) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), waterBlock);
             }

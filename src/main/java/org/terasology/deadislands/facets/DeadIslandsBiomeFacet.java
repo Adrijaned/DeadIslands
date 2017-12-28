@@ -15,14 +15,14 @@
  */
 package org.terasology.deadislands.facets;
 
+import org.terasology.deadislands.DeadIslandsBiome;
 import org.terasology.math.Region3i;
-import org.terasology.world.biomes.Biome;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.facets.base.BaseObjectFacet3D;
 
-public class DeadIslandsBiomeFacet extends BaseObjectFacet3D<Biome> {
+public class DeadIslandsBiomeFacet extends BaseObjectFacet3D<DeadIslandsBiome> {
 
     public DeadIslandsBiomeFacet(Region3i targetRegion, Border3D border) {
-        super(targetRegion, border, Biome.class);
+        super(targetRegion, border, DeadIslandsBiome.class);
     }
 }

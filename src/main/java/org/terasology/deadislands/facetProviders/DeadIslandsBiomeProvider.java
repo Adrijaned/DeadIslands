@@ -56,7 +56,7 @@ public class DeadIslandsBiomeProvider implements FacetProvider {
                 biomeFacet.setWorld(coordinates, DeadIslandsBiome.OCEAN);
                 continue;
             }
-            if (surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) > seaLevel + 1) {
+            if (surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) > seaLevel + 0.5) {
                 biomeFacet.setWorld(coordinates, DeadIslandsBiome.ISLAND);
                 continue;
             }
