@@ -15,6 +15,7 @@
  */
 package org.terasology.deadislands.rasterizers;
 
+import org.terasology.deadislands.DeadIslandsBiome;
 import org.terasology.deadislands.facets.DeadIslandsTreeFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
@@ -36,7 +37,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 })
 public class DeadIslandsTreeRasterizer implements WorldRasterizer {
     private Block trunk;
-    private static final float rarity = 0.9f;
+    private static final float rarity = 0.5f;
 
     @Override
     public void initialize() {
@@ -49,9 +50,12 @@ public class DeadIslandsTreeRasterizer implements WorldRasterizer {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         DeadIslandsTreeFacet treeFacet = chunkRegion.getFacet(DeadIslandsTreeFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
-//            if (chunk.getBiome() && coordinates.y >= surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) && treeFacet.getWorld(coordinates.x, coordinates.z) >= rarity && coordinates.y < surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) + 5){
-//                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), trunk);
-//            }
+            if (chunk.getBiome(ChunkMath.calcBlockPos(coordinates)) == DeadIslandsBiome.ISLAND
+                    && coordinates.y >= surfaceHeightFacet.getWorld(coordinates.x, coordinates.z)
+                    && treeFacet.getWorld(coordinates.x, coordinates.z) >= rarity
+                    && coordinates.y < surfaceHeightFacet.getWorld(coordinates.x, coordinates.z) + 5){
+                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), trunk);
+            }
         }
     }
 }

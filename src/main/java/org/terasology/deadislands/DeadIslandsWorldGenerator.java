@@ -17,10 +17,10 @@ package org.terasology.deadislands;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsBiomeProvider;
-import org.terasology.deadislands.facetProviders.DeadIslandsHumidityProvider;
+import org.terasology.deadislands.facetProviders.DeadIslandsSoilThicknessProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsSurfaceProvider;
-import org.terasology.deadislands.facetProviders.DeadIslandsTemperatureProvider;
 import org.terasology.deadislands.facetProviders.DeadIslandsTreeProvider;
+import org.terasology.deadislands.rasterizers.DeadIslandsBiomeRasterizer;
 import org.terasology.deadislands.rasterizers.DeadIslandsTreeRasterizer;
 import org.terasology.deadislands.rasterizers.DeadIslandsWorldRasterizer;
 import org.terasology.engine.SimpleUri;
@@ -45,11 +45,11 @@ public class DeadIslandsWorldGenerator extends BaseFacetedWorldGenerator {
                 .setSeaLevel(4)
                 .addProvider(new SeaLevelProvider(4))
                 .addProvider(new DeadIslandsSurfaceProvider())
-                .addProvider(new DeadIslandsHumidityProvider())
-                .addProvider(new DeadIslandsTemperatureProvider())
-                .addProvider(new DeadIslandsBiomeProvider())
                 .addProvider(new DeadIslandsTreeProvider())
+                .addProvider(new DeadIslandsBiomeProvider())
+                .addProvider(new DeadIslandsSoilThicknessProvider())
                 .addRasterizer(new DeadIslandsWorldRasterizer())
+                .addRasterizer(new DeadIslandsBiomeRasterizer())
                 .addRasterizer(new DeadIslandsTreeRasterizer())
                 .addPlugins();
     }

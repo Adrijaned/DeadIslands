@@ -16,6 +16,7 @@
 package org.terasology.deadislands.rasterizers;
 
 import org.terasology.core.world.generator.facets.BiomeFacet;
+import org.terasology.deadislands.facets.DeadIslandsSoilThicknessFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -31,26 +32,29 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Requires({
         @Facet(SeaLevelFacet.class),
         @Facet(SurfaceHeightFacet.class),
-        @Facet(BiomeFacet.class)
+        @Facet(DeadIslandsSoilThicknessFacet.class)
 })
 public class DeadIslandsWorldRasterizer implements org.terasology.world.generation.WorldRasterizer {
-    private Block dirtBlock, waterBlock;
+    private Block dirtBlock, waterBlock, stoneBlock;
 
     @Override
     public void initialize() {
         dirtBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         waterBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
+        stoneBlock = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         int seaLevel = chunkRegion.getFacet(SeaLevelFacet.class).getSeaLevel();
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        DeadIslandsSoilThicknessFacet soilThicknessFacet = chunkRegion.getFacet(DeadIslandsSoilThicknessFacet.class);
         for (Vector3i coordinates : chunkRegion.getRegion()) {
-            Vector3i reCalceedCoordinates = ChunkMath.calcBlockPos(coordinates);
             float surfaceHeight = surfaceHeightFacet.getWorld(coordinates.x, coordinates.z);
-            chunk.setBiome(reCalceedCoordinates.x, reCalceedCoordinates.y, reCalceedCoordinates.z, chunkRegion.getFacet(BiomeFacet.class).get(reCalceedCoordinates.x, reCalceedCoordinates.z));
-            if (coordinates.y < surfaceHeight) {
+            if (coordinates.y < surfaceHeight - soilThicknessFacet.getWorld(coordinates.x, coordinates.z)) {
+                chunk.setBlock(ChunkMath.calcBlockPos(coordinates), stoneBlock);
+            }
+            else if (coordinates.y < surfaceHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), dirtBlock);
             } else if (coordinates.y <= seaLevel) {
                 chunk.setBlock(ChunkMath.calcBlockPos(coordinates), waterBlock);

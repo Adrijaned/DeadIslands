@@ -19,8 +19,10 @@ import org.terasology.world.biomes.Biome;
 
 public enum DeadIslandsBiome implements Biome{
     OCEAN("Ocean", 0.3f, 1f, 0.3f),
-    BEACH("Beach", 0.3f, 0.99f, 0.4f),
-    ISLAND("Island", 0.25f, 0.95f, 0.6f);
+    BEACH("Beach", 0.3f, 0.99f, 0.6f),
+    ISLAND("Island", 0.25f, 0.95f, 0.8f),
+    SKY("Sky", 0.1f, 0.25f, 0.2f),
+    UNDERGROUND("Underground", 0f, 0.8f, 0.1f);
 
     private final String id, name;
     private final float fog, humidity, temperature;
