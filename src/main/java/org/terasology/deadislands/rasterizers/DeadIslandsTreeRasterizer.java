@@ -15,8 +15,8 @@
  */
 package org.terasology.deadislands.rasterizers;
 
-import org.terasology.deadislands.DeadIslandsBiome;
 import org.terasology.deadislands.facets.DeadIslandsTreeFacet;
+import org.terasology.deadislands.support.DeadIslandsBiome;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;

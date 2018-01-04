@@ -16,9 +16,9 @@
 package org.terasology.deadislands.facetProviders;
 
 
-import org.terasology.deadislands.DeadIslandsBiome;
 import org.terasology.deadislands.facets.DeadIslandsBiomeFacet;
 import org.terasology.deadislands.facets.DeadIslandsSoilThicknessFacet;
+import org.terasology.deadislands.support.DeadIslandsBiome;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;

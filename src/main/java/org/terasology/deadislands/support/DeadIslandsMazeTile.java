@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.deadislands.facets;
+package org.terasology.deadislands.support;
 
-import org.terasology.deadislands.support.DeadIslandsBiome;
-import org.terasology.math.Region3i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseObjectFacet3D;
-
-public class DeadIslandsBiomeFacet extends BaseObjectFacet3D<DeadIslandsBiome> {
-
-    public DeadIslandsBiomeFacet(Region3i targetRegion, Border3D border) {
-        super(targetRegion, border, DeadIslandsBiome.class);
-    }
+public enum DeadIslandsMazeTile {
+    OBSTRUCTED,
+    AVAILABLE,
+    DESIGNATED
 }

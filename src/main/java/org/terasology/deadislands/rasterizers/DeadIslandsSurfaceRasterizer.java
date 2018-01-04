@@ -15,15 +15,12 @@
  */
 package org.terasology.deadislands.rasterizers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.terasology.deadislands.DeadIslandsBiome;
 import org.terasology.deadislands.facets.DeadIslandsBiomeFacet;
 import org.terasology.deadislands.facets.DeadIslandsSoilThicknessFacet;
+import org.terasology.deadislands.support.DeadIslandsBiome;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.world.biomes.Biome;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
@@ -32,8 +29,6 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
-
-import java.util.Objects;
 
 @Requires({
         @Facet(SeaLevelFacet.class),
