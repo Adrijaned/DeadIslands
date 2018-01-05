@@ -5,8 +5,9 @@
   "tile": "fallenTreeBarkMiddle",
   "left_end": {
     "tiles": {
-      "topBottom": "fallenTreeBarkLeft",
-      "front": "fallenTreeBarkLeft",
+      "top": "fallenTreeBarkLeft",
+      "bottom": "fallenTreeBarkRight",
+      "front": "fallenTreeBarkRight",
       "back": "fallenTreeBarkLeft",
       "left": "fallenTreeEnd",
       "right": "fallenTreeEnd"
@@ -17,8 +18,9 @@
   },
   "right_end": {
     "tiles": {
-      "topBottom": "fallenTreeBarkRight",
-      "front": "fallenTreeBarkRight",
+      "top": "fallenTreeBarkRight",
+      "bottom": "fallenTreeBarkLeft",
+      "front": "fallenTreeBarkLeft",
       "back": "fallenTreeBarkRight",
       "left": "fallenTreeEnd",
       "right": "fallenTreeEnd"

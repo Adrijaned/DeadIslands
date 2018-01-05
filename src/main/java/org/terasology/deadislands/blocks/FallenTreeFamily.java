@@ -45,21 +45,20 @@ public class FallenTreeFamily extends UpdatesWithNeighboursFamily {
     }
 
     private Block getBlockForLocation(WorldProvider worldProvider, Vector3i location) {
-        boolean left, right;
         Vector3i temp = new Vector3i(location);
         temp.add(Side.LEFT.getVector3i());
-        left = worldProvider.isBlockRelevant(temp) && worldProvider.getBlock(temp).getBlockFamily() instanceof FallenTreeFamily;
+        boolean left = worldProvider.isBlockRelevant(temp) && worldProvider.getBlock(temp).getBlockFamily() instanceof FallenTreeFamily;
         temp = new Vector3i(location);
         temp.add(Side.RIGHT.getVector3i());
-        right = worldProvider.isBlockRelevant(temp) && worldProvider.getBlock(temp).getBlockFamily() instanceof FallenTreeFamily;
+        boolean right = worldProvider.isBlockRelevant(temp) && worldProvider.getBlock(temp).getBlockFamily() instanceof FallenTreeFamily;
         if (!(left || right)) {
             return blocks.get((byte) 0);
-        } else if (left) {
-            return blocks.get((byte) 0b10);
+        } else if (left && right) {
+            return blocks.get((byte) 0b10010);
         } else if (right) {
             return blocks.get((byte) 0b10000);
         } else {
-            return blocks.get((byte) 0b10010);
+            return blocks.get((byte) 0b10);
         }
     }
 }
