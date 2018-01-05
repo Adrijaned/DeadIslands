@@ -1,0 +1,36 @@
+{
+  "displayName": "Fallen Tree Trunk",
+  "categories": ["wood"],
+  "rotation": "DeadIslands:fallenTree",
+  "tile": "fallenTreeBarkMiddle",
+  "left_end": {
+    "tiles": {
+      "topBottom": "fallenTreeBarkLeft",
+      "front": "fallenTreeBarkLeft",
+      "back": "fallenTreeBarkLeft",
+      "left": "fallenTreeEnd",
+      "right": "fallenTreeEnd"
+    }
+  },
+  "midlle": {
+    "tile": "fallenTreeBarkMiddle"
+  },
+  "right_end": {
+    "tiles": {
+      "topBottom": "fallenTreeBarkRight",
+      "front": "fallenTreeBarkRight",
+      "back": "fallenTreeBarkRight",
+      "left": "fallenTreeEnd",
+      "right": "fallenTreeEnd"
+    }
+  },
+  "lone": {
+    "tiles": {
+      "topBottom": "fallenTreeBarkBoth",
+      "front": "fallenTreeBarkBoth",
+      "back": "fallenTreeBarkBoth",
+      "left": "fallenTreeEnd",
+      "right": "fallenTreeEnd"
+    }
+  }
+}
