@@ -19,6 +19,9 @@ import gnu.trove.map.TByteObjectMap;
 import gnu.trove.map.hash.TByteObjectHashMap;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
+import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.naming.Name;
@@ -39,7 +42,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RegisterBlockFamilyFactory("DeadIslands:fallenTree")
-public class FallenTreeFamilyFactory implements BlockFamilyFactory {
+@RegisterSystem(RegisterMode.AUTHORITY)
+public class FallenTreeFamilyFactory extends BaseComponentSystem implements BlockFamilyFactory {
 
     @In
     private WorldProvider worldProvider;
