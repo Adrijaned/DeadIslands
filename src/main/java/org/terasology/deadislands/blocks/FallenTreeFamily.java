@@ -16,35 +16,66 @@
 package org.terasology.deadislands.blocks;
 
 import gnu.trove.map.TByteObjectMap;
+import gnu.trove.map.hash.TByteObjectHashMap;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.world.BlockEntityRegistry;
+import org.terasology.naming.Name;
+import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockBuilderHelper;
 import org.terasology.world.block.BlockUri;
+import org.terasology.world.block.family.AbstractBlockFamily;
+import org.terasology.world.block.family.BlockSections;
+import org.terasology.world.block.family.RegisterBlockFamily;
 import org.terasology.world.block.family.UpdatesWithNeighboursFamily;
+import org.terasology.world.block.loader.BlockFamilyDefinition;
+import org.terasology.world.block.shapes.BlockShape;
 
-import java.util.List;
 
-public class FallenTreeFamily extends UpdatesWithNeighboursFamily {
-    private final TByteObjectMap<Block> blocks;
+@RegisterBlockFamily("DeadIslands:fallenTree")
+@BlockSections({"middle", "left_end", "right_end", "lone"})
+public class FallenTreeFamily extends AbstractBlockFamily implements UpdatesWithNeighboursFamily {
 
-    public FallenTreeFamily(BlockUri blockUri, List<String> categories, Block archetypeBlock, TByteObjectMap<Block> blocks) {
-        super(null, blockUri, categories, archetypeBlock, blocks, (byte) 0b10010);
-        this.blocks = blocks;
+    @In
+    WorldProvider worldProvider;
+
+    private TByteObjectMap<Block> blocks;
+    BlockUri blockUri;
+
+    public FallenTreeFamily(BlockFamilyDefinition definition, BlockShape shape, BlockBuilderHelper blockBuilder) {
+        super(definition, shape, blockBuilder);
     }
 
-    @Override
-    public Block getBlockForPlacement(WorldProvider worldProvider, BlockEntityRegistry blockEntityRegistry, Vector3i location, Side attachmentSide, Side direction) {
-        return getBlockForLocation(worldProvider, location);
+    public FallenTreeFamily(BlockFamilyDefinition definition, BlockBuilderHelper blockBuilder) {
+        super(definition, blockBuilder);
+        blocks = new TByteObjectHashMap<>();
+        blockUri = new BlockUri(definition.getUrn());
+        addBlocks(definition, blockBuilder);
+        this.setBlockUri(blockUri);
+        this.setCategory(definition.getCategories());
     }
 
-    @Override
-    public Block getBlockForNeighborUpdate(WorldProvider worldProvider, BlockEntityRegistry blockEntityRegistry, Vector3i location, Block oldBlock) {
-        return getBlockForLocation(worldProvider, location);
+    private void addBlocks(BlockFamilyDefinition definition, BlockBuilderHelper blockBuilder) {
+        Block block = makeBlock(definition, blockBuilder, "middle");
+        blocks.put((byte) 0b10010, block);
+        block = makeBlock(definition, blockBuilder, "left_end");
+        blocks.put((byte) 0b10000, block);
+        block = makeBlock(definition, blockBuilder, "right_end");
+        blocks.put((byte) 0b10, block);
+        block = makeBlock(definition, blockBuilder, "lone");
+        blocks.put((byte) 0, block);
     }
 
-    private Block getBlockForLocation(WorldProvider worldProvider, Vector3i location) {
+    private Block makeBlock(BlockFamilyDefinition definition, BlockBuilderHelper blockBuilder, String section) {
+        Block block = blockBuilder.constructSimpleBlock(definition, section);
+        block.setUri(new BlockUri(blockUri, new Name(section)));
+        block.setBlockFamily(this);
+        return block;
+    }
+
+
+    private Block getBlockForLocation(Vector3i location) {
         Vector3i temp = new Vector3i(location);
         temp.add(Side.LEFT.getVector3i());
         boolean left = worldProvider.isBlockRelevant(temp) && worldProvider.getBlock(temp).getBlockFamily() instanceof FallenTreeFamily;
@@ -60,5 +91,46 @@ public class FallenTreeFamily extends UpdatesWithNeighboursFamily {
         } else {
             return blocks.get((byte) 0b10);
         }
+    }
+
+    @Override
+    public Block getBlockForNeighborUpdate(Vector3i location, Block oldBlock) {
+        return getBlockForLocation(location);
+    }
+
+    @Override
+    public Block getBlockForPlacement(Vector3i location, Side attachmentSide, Side direction) {
+        return getBlockForLocation(location);
+    }
+
+    @Override
+    public Block getArchetypeBlock() {
+        return blocks.get((byte) 0);
+    }
+
+    @Override
+    public Block getBlockFor(BlockUri blockUri) {
+        for (Block block : blocks.valueCollection()) {
+            if (block.getURI().equals(blockUri)) {
+                return block;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Iterable<Block> getBlocks() {
+        return blocks.valueCollection();
+    }
+
+    @Override
+    public BlockUri getURI() {
+        return blockUri;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "Fallen Tree";
     }
 }
