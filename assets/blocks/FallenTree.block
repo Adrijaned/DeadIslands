@@ -2,6 +2,7 @@
   "displayName": "Fallen Tree Trunk",
   "categories": ["wood"],
   "family": "DeadIslands:fallenTree",
+  "tile": "fallenTreeBarkMiddle",
   "left_end": {
     "tiles": {
       "top": "fallenTreeBarkLeft",
@@ -12,7 +13,7 @@
       "right": "fallenTreeEnd"
     }
   },
-  "midlle": {
+  "middle": {
     "tile": "fallenTreeBarkMiddle"
   },
   "right_end": {
