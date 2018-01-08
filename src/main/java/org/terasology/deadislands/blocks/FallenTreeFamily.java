@@ -58,7 +58,7 @@ public class FallenTreeFamily extends MultiConnectFamily {
 
     @Override
     public byte getConnectionSides() {
-        return SideBitFlag.getSides(Side.LEFT, Side.RIGHT);
+        return SideBitFlag.getSides(Side.LEFT, Side.RIGHT, Side.FRONT, Side.BACK);
     }
 
     @Override
