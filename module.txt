@@ -4,6 +4,6 @@
     "author" : "Adrijaned",
     "displayName" : "DeadIslands",
     "description" : "Terasology world generator of dead islands - GCI2017",
-    "dependencies" : [{"id": "Core", "minVersion": "1.0.0"}],
+    "dependencies" : [{"id": "Core", "minVersion": "1.0.0"}, {"id": "StructureTemplates", "minVersion": "0.2.0"}],
     "serverSideOnly" : false
 }
